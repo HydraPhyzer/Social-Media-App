@@ -2,12 +2,21 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import {useSelector ,useDispatch} from 'react-redux'
+import { SetUser } from '../Redux/Actions'
+
 const Signup = () => {
   let [Name,setName]=useState('')
   let [Email,setEmail]=useState('')
   let [Pass,setPass]=useState('')
   let [Check,setCheck]=useState(false)
-  
+
+  let Dispatch=useDispatch();
+  let State=useSelector((Stat)=>
+  {
+    return Stat.Reduce
+  })
+
   let SignUp=()=>
   {
     if(Name && Email && Pass)

@@ -2,11 +2,11 @@ import React ,{useState} from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const Login = () => {
+const Login = () => { 
   let [Email,setEmail]=useState('')
   let [Pass,setPass]=useState('')
   let [Check,setCheck]=useState(false)
-
+  
   let LogIn=()=>
   {
     if(Email && Pass)
@@ -23,6 +23,7 @@ const Login = () => {
 
 
   return (
+    
     <div className="md:flex md:w-[100vw] h-[100vh] flex-col flex md:flex-row-reverse bg-[#1778F2] md:bg-transparent items-center">
       <div className="Si-Right md:space-y-5 flex-col w-[100%] md:w-[50%] h-fit md:h-[100%] flex justify-center md:items-center">
         <Image src={"/Facebook.png"} height={100} width={100} objectFit={'contain'}></Image>
