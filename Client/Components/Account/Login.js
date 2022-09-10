@@ -1,8 +1,27 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 const Login = () => {
+  let [Email,setEmail]=useState('')
+  let [Pass,setPass]=useState('')
+  let [Check,setCheck]=useState(false)
+
+  let LogIn=()=>
+  {
+    if(Email && Pass)
+    {
+      setEmail("");
+      setPass("");
+      setCheck(false);
+    }
+    else
+    {
+      setCheck(true)
+    }
+  }
+
+
   return (
     <div className="md:flex md:w-[100vw] h-[100vh] flex-col flex md:flex-row-reverse bg-[#1778F2] md:bg-transparent items-center">
       <div className="Si-Right md:space-y-5 flex-col w-[100%] md:w-[50%] h-fit md:h-[100%] flex justify-center md:items-center">
@@ -13,13 +32,15 @@ const Login = () => {
       <div className="space-y-2 Si-Left flex flex-col bg-[#1778F2] w-[50%] h-full md:h-[100%] md:flex justify-center items-center">
         <div className="flex flex-col">
             <label className="text-white" htmlFor="Email">Enter Your Email</label>
-            <input className="font-normal" type="email" id="Email"/>
+            <input value={Email}  onChange={(E)=>{setEmail(E.target.value)}} className="font-normal" type="email" id="Email"/>
+            {Check && !Email ? <small className="text-black">Email Can't be Blank</small>:""}
         </div>
         <div className="flex flex-col space-y-2">
             <label className="text-white" htmlFor="Pass">Enter Your Password</label>
-            <input className="font-normal" type="password" id="Pass"/>
+            <input value={Pass}  onChange={(E)=>{setPass(E.target.value)}} className="font-normal" type="password" id="Pass"/>
+            {Check && !Pass ? <small className="text-black">Password Can't be Blank</small>:""}
 
-            <button className="bg-black text-white p-2 rounded-md text-sm hover:animate-pulse">Login</button>
+            <button onClick={()=>{LogIn()}} className="bg-black text-white p-2 rounded-md text-sm hover:animate-pulse">Login</button>
             <hr className='border-2'/>
             <span className="text-center space-y-2 text-[#f1c40f]">or</span>
             
