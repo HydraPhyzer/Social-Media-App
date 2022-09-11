@@ -3,7 +3,7 @@ import EachNotification from './EachNotification'
 
 const FriendsSidebar = () => {
   return (
-    <div className="p-2 space-y-2 flex flex-col h-[100%]">
+    <div className="p-2 space-y-2 flex flex-col h-[100%] Scroll">
       <div className="h-[100%] flex flex-col justify-center ">
         <EachNotification props="" />
       </div>

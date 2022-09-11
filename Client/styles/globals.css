@@ -53,11 +53,11 @@ body
     font-size: 20px;
   }
 }
-.Freind::-webkit-scrollbar , .Request::-webkit-scrollbar
+.Friend::-webkit-scrollbar , .Request::-webkit-scrollbar
 {
   width: 5px;
 }
-.Freind::-webkit-scrollbar-thumb, .Request::-webkit-scrollbar-thumb
+.Friend::-webkit-scrollbar-thumb, .Request::-webkit-scrollbar-thumb
 {
   background: white;
 }
