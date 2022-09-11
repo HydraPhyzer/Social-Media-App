@@ -61,3 +61,7 @@ body
 {
   background: white;
 }
+.Scroll::-webkit-scrollbar
+{
+  display: none;
+}

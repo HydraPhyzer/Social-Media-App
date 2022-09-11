@@ -4,4 +4,11 @@ const nextConfig = {
   swcMinify: true,
 }
 
+
 module.exports = nextConfig
+
+module.exports={
+  images:{
+    domains:['www.esafety.gov.au' , 'images.pexels.com']
+  }
+}
