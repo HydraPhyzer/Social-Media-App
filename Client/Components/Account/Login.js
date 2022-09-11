@@ -1,11 +1,21 @@
 import React ,{useState} from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import {useRouter} from 'next/router';
+
+import { useSelector, useDispatch } from "react-redux";
+import { SetUser } from "../Redux/Actions";
 
 const Login = () => { 
   let [Email,setEmail]=useState('')
   let [Pass,setPass]=useState('')
   let [Check,setCheck]=useState(false)
+
+  let Router=useRouter()
+  let Dispatch = useDispatch();
+  let State = useSelector((Stat) => {
+    return Stat.Reduce;
+  });
   
   let LogIn=()=>
   {
@@ -14,6 +24,22 @@ const Login = () => {
       setEmail("");
       setPass("");
       setCheck(false);
+
+      fetch(`http://localhost:3500/login`, {
+        method: "POST",
+        body: JSON.stringify({ Email, Pass }),
+        headers: {
+          "content-type": "application/json",
+        },
+      }).then(async (Res) => {
+        if (Res) {
+          let Data = await Res.json();
+          Dispatch(SetUser(Data.Result));
+          localStorage.setItem("Token", Data.Token);
+          Router.push('/')
+        }
+        console.log(Res)
+      });
     }
     else
     {

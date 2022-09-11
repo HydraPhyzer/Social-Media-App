@@ -28,3 +28,24 @@ input:focus
   background-color: #f1c40f;
   margin: 2px;
 }
+body
+{
+  background-color: #ecf0f1;
+}
+.Icon
+{
+  color: gray;
+}
+
+@media (max-width:320px)
+{
+  .Avatar
+  {
+    height: 25px;
+    width: 25px;
+  }
+  .Icon
+  {
+    font-size: 20px;
+  }
+}

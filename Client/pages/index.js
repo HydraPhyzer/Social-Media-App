@@ -5,10 +5,15 @@ let Home = ({ User }) => {
   let Router = useRouter();
   let [State, setState] = useState(false);
   useEffect(() => {
-    if (!localStorage.getItem(JSON.stringify('User'))) {
-      Router.push("/signup");
+    if (localStorage.getItem('Token')) {
+      console.log(localStorage.getItem('Token'))
+      Router.push("/facebook");
     }
-  });
+    else
+    {
+      Router.push('/signup')
+    }
+  },[]);
 
   return (
     <div className="flex justify-center flex-col items-center h-[100vh] space-y-5 bg-[#1778F2]">

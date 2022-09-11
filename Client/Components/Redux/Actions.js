@@ -1,6 +1,7 @@
-export let SetUser=()=>
+export let SetUser=(User)=>
 {
     return{
-        type:"SET-USER"
+        type:"SET-USER",
+        payload:User
     }
 }
