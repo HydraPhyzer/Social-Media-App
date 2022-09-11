@@ -36,16 +36,28 @@ body
 {
   color: gray;
 }
-
-@media (max-width:320px)
+.Avatar
+{
+  height: 30px;
+  width: 30px;
+}
+@media (max-width:370px)
 {
   .Avatar
   {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
   }
   .Icon
   {
     font-size: 20px;
   }
+}
+.Freind::-webkit-scrollbar , .Request::-webkit-scrollbar
+{
+  width: 5px;
+}
+.Freind::-webkit-scrollbar-thumb, .Request::-webkit-scrollbar-thumb
+{
+  background: white;
 }
