@@ -17,7 +17,6 @@ const Header = ({ props }) => {
         <Link href="/">
           <Avatar
             src={"/Facebook.png"}
-            objectFit={"contain"}
             className="Avatar"
           />
         </Link>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Header from "../Components/Header/Header";
 import RequestSidebar from "../Components/RequestSidebar/RequestSidebar";
@@ -6,8 +6,22 @@ import Notification from "../Components/Notification/Notification";
 import MainPage from "../Components/MainPage/MainPage";
 import VideoPage from "../Components/VideoPage/VideoPage";
 import FriendPage from "../Components/FriendsPage/FriendPage";
+import { useRouter } from "next/router";
 
-const facebook = () => {
+const facebook = ({ Status }) => {
+  let [ShowPage, setShowPage] = useState(false);
+  let Router = useRouter();
+
+  useEffect(() => {
+    if (Status?.Error) {
+      setShowPage(false)
+      Router.push("/signup");
+    } 
+    else if (Status?.Pass)
+    {
+      setShowPage(true);
+    }
+  });
   let [Main, setMainPage] = useState(true);
   let [Video, setVideo] = useState(false);
   let [Friend, setFriend] = useState(false);
@@ -22,7 +36,7 @@ const facebook = () => {
     ModeName == "Notification" ? setNotify(true) : setNotify(false);
     // alert(ModeName)
   };
-  return (
+  return ShowPage ? (
     <>
       <Head>
         <title>Facebook</title>
@@ -61,7 +75,26 @@ const facebook = () => {
         </div>
       </div>
     </>
+  ) : (
+    ""
   );
 };
 
 export default facebook;
+
+export let getServerSideProps = async (context) => {
+  let Res = await fetch("http://localhost:3500/facebook", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: context.req.headers?.cookie?.split("=")[1],
+    },
+  });
+  let Result = await Res.json();
+
+  return {
+    props: {
+      Status: Result,
+    },
+  };
+};

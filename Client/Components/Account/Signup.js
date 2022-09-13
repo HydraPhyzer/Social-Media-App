@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from 'next/router'
-
+import {setCookie} from'cookies-next'
 import { useSelector, useDispatch } from "react-redux";
 import { SetUser } from "../Redux/Actions";
 
@@ -36,7 +36,8 @@ const Signup = () => {
         if (Res) {
           let Data = await Res.json();
           Dispatch(SetUser(Data.Result));
-          localStorage.setItem("Token", Data.Token);
+          // localStorage.setItem("Token", Data.Token);
+          setCookie("Token" , Data.Token)
           Router.push('/')
         }
       });
