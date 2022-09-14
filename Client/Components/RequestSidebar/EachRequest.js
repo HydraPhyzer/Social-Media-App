@@ -31,8 +31,8 @@ const EachRequest = ({props}) => {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center space-y-5">
-            <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center font-[100px]">
-                <DeviceHubIcon className="text-[70px] text-white"/>
+            <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center">
+                <DeviceHubIcon className="text-white" fontSize="large"/>
             </div>
           <p className="text-gray-500 text-center ">Currently No <strong>Requests</strong> <EmojiEmotionsIcon className="text-[#1778F2] animate-bounce"/>.</p>
         </div>

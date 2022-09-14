@@ -35,10 +35,18 @@ const Signup = () => {
       }).then(async (Res) => {
         if (Res) {
           let Data = await Res.json();
-          Dispatch(SetUser(Data.Result));
-          // localStorage.setItem("Token", Data.Token);
-          setCookie("Token" , Data.Token)
-          Router.push('/')
+
+          if(Data?.Error)
+          {
+            alert("Unable to Register")
+          }
+          else
+          {
+            Dispatch(SetUser(Data.Result));
+            // localStorage.setItem("Token", Data.Token);
+            setCookie("Token" , Data.Token)
+            Router.push('/')
+          }
         }
       });
     } else {

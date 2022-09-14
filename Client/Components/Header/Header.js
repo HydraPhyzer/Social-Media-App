@@ -9,16 +9,14 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import MarkUnreadChatAltRoundedIcon from "@mui/icons-material/MarkUnreadChatAltRounded";
 import DeviceHubIcon from "@mui/icons-material/DeviceHub";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+import { Icon } from "@mui/material";
 
 const Header = ({ props }) => {
   return (
     <div className="p-1 bg-white flex justify-between items-center sm:space-x-5 shadow-md w-[100vw]">
       <div className="Left flex items-center space-x-2 sm:min-w-[24%]">
         <Link href="/">
-          <Avatar
-            src={"/Facebook.png"}
-            className="Avatar"
-          />
+          <Avatar src={"/Facebook.png"} className="Avatar" />
         </Link>
         <input
           type="text"
@@ -49,17 +47,30 @@ const Header = ({ props }) => {
             }}
             className="Icon sm:hover:bg-white md:flex-[0.2] rounded-lg"
           />
-          <DeviceHubIcon onClick={()=>{(props("Request"))}} className="Icon sm:hover:bg-white md:flex-[0.2] rounded-lg sm:hidden" />
-          <CircleNotificationsIcon onClick={()=>{(props("Notification"))}} className="Icon sm:hover:bg-white md:flex-[0.2] rounded-lg sm:hidden" />
+
+          <DeviceHubIcon
+            onClick={() => {
+              props("Request");
+            }}
+            className="Icon sm:hover:bg-white md:flex-[0.2] rounded-lg sm:hidden"
+          />
+          <CircleNotificationsIcon
+            onClick={() => {
+              props("Notification");
+            }}
+            className="Icon sm:hover:bg-white md:flex-[0.2] rounded-lg sm:hidden"
+          />
         </div>
       </div>
       <div className="Right flex items-center sm:space-x-2 sm:min-w-[24%] justify-end p-1">
-        <Avatar className="hidden sm:flex justify-center items-center bg-transparent">
-          <SettingsRoundedIcon className="text-[#1778F2] hover:animate-spin" />
+        <Avatar className="Avatar justify-center items-center ">
+          <SettingsRoundedIcon className="text-white hover:animate-spin" />
         </Avatar>
-        <Avatar className="hidden sm:flex justify-center items-center bg-transparent">
-          <MarkUnreadChatAltRoundedIcon className="text-[#1778F2] hover:animate-pulse" />
+        <Avatar className="sm:flex justify-center items-center hidden">
+          <MarkUnreadChatAltRoundedIcon className="text-white hover:animate-pulse" />
         </Avatar>
+
+
         <Avatar className="Avatar" />
       </div>
     </div>

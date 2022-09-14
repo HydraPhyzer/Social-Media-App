@@ -29,17 +29,23 @@ const Login = () => {
         method: "POST",
         body: JSON.stringify({ Email, Pass }),
         headers: {
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
       }).then(async (Res) => {
         if (Res) {
+
           let Data = await Res.json();
-          Dispatch(SetUser(Data.Result));
-          // localStorage.setItem("Token", Data.Token);
-          setCookie("Token" , Data.Token)
-          Router.push('/')
+          if(Data?.Error)
+          {
+            alert("User Not Exists")
+          }
+          else
+          {
+            Dispatch(SetUser(Data.Result));
+            setCookie("Token" , Data.Token)
+            Router.push('/')
+          }
         }
-        console.log(Res)
       });
     }
     else
