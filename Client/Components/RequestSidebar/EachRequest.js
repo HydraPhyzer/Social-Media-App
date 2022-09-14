@@ -31,10 +31,10 @@ const EachRequest = ({props}) => {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center space-y-5">
-            <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center">
-                <DeviceHubIcon className="text-white" fontSize="large"/>
+            <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center shadow-md">
+                <DeviceHubIcon className="text-white" sx={{fontSize:50}}/>
             </div>
-          <p className="text-gray-500 text-center ">Currently No <strong>Requests</strong> <EmojiEmotionsIcon className="text-[#1778F2] animate-bounce"/>.</p>
+          <p className="text-gray-500 text-center ">Currently No <strong>Requests </strong> <EmojiEmotionsIcon className="text-blue-500"/></p>
         </div>
       )}
     </div>

@@ -22,12 +22,12 @@ export default function EachFriend({ props }) {
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center space-y-5">
-              <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center">
-                <PeopleAltRoundedIcon className="text-white" fontSize="large"/>
+              <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center shadow-md">
+                <PeopleAltRoundedIcon className="text-white" sx={{fontSize:50}}/>
             </div>
               <p className="text-gray-500 text-center ">
                 No Videos Available{" "}
-                <EmojiEmotionsIcon className="text-yellow-500 animate-bounce" />
+                <EmojiEmotionsIcon className="text-yellow-500" />
                 .
               </p>
             </div>

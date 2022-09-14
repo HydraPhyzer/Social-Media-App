@@ -36,17 +36,8 @@ body
 {
   color: gray;
 }
-.Avatar
-{
-  height: 30px;
-  width: 30px;
-}
 @media (max-width:370px)
 {
-  .Avatar
-  {
-    font-size: 15px;
-  }
   .Icon
   {
     font-size: 20px;

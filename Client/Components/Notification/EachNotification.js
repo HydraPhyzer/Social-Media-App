@@ -17,12 +17,11 @@ const EachNotification = ({ props }) => {
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center space-y-5">
-            <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center font-[100px]">
-              <CircleNotificationsIcon className="text-[70px] text-white" />
+            <div className="rounded-full bg-gray-300 h-[100px] w-[100px] flex justify-center items-center shadow-md">
+              <CircleNotificationsIcon className="text-white" sx={{fontSize:50}}/>
             </div>
             <p className="text-gray-500 text-center ">
-              No Notofications for Now{" "}
-              <EmojiEmotionsIcon className="text-black animate-bounce" />.
+              Currently No <strong>Notification <EmojiEmotionsIcon className="text-blue-500"/> </strong>
             </p>
           </div>
         )}
