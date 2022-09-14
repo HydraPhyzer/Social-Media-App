@@ -42,14 +42,14 @@ const facebook = ({ Status }) => {
         <title>Facebook</title>
       </Head>
 
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col  h-screen">
         <Header props={ModeChange} />
-        <div className="Area flex justify-between flex-1 h-[90%]">
-          <section className="w-[25%] bg-gray-200 overflow-y-scroll Request hidden sm:block ">
+        <div className="Area flex justify-between h-[90%]">
+          <section className="bg-gray-200 overflow-y-scroll flex-1 Request hidden sm:block">
             <RequestSidebar />
           </section>
 
-          <section className="flex-1 bg-gray">
+          <section className="bg-gray w-[50%]">
             {Main ? <MainPage /> : ""}
             {Friend ? <FriendPage /> : ""}
             {Video ? <VideoPage /> : ""}
@@ -69,7 +69,7 @@ const facebook = ({ Status }) => {
             )}
           </section>
 
-          <section className="w-[25%] bg-gray-200 overflow-y-scroll Friend hidden sm:block">
+          <section className="bg-gray-200 overflow-y-scroll flex-1 Friend hidden sm:block">
             <Notification />
           </section>
         </div>

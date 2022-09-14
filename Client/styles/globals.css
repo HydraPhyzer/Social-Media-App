@@ -45,9 +45,7 @@ body
 {
   .Avatar
   {
-    height: 20px;
-    width: 20px;
-    background-color: white;
+    font-size: 15px;
   }
   .Icon
   {

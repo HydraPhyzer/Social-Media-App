@@ -28,14 +28,14 @@ const AddPost = () => {
 
       <hr className="h-[3px] bg-gray-300 border-none rounded-full" />
 
-      <div className="Bottom flex justify-between p-1 sm:text-sm text-sm text-gray-500">
+      <div className="Bottom flex justify-between p-1 md:text-xs sm:text-sm  text-sm text-gray-500">
         <div className="A flex items-center cursor-pointer">
           <img
             className="hover:animate-pulse sm:h-[30px] h-[25px]"
             src="/Emoji/Facebook.png"
             alt=""
           />
-          <p className="p-1">Live Camera</p>
+          <p className="p-1">Video</p>
         </div>
 
         <div className="flex">
