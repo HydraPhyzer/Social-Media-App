@@ -9,10 +9,25 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import MarkUnreadChatAltRoundedIcon from "@mui/icons-material/MarkUnreadChatAltRounded";
 import DeviceHubIcon from "@mui/icons-material/DeviceHub";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+import {deleteCookie} from 'cookies-next'
+import { useRouter } from "next/router";
+import {useState} from 'react' 
 
 const Header = ({ props }) => {
+  let [Menu,setMenu]=useState(false);
+
+  let DisplayMenu=()=>
+  {
+    setMenu(!Menu);
+  }
+  let Router=useRouter()
+  let LogOut=()=>
+  { 
+    deleteCookie("Token")
+    Router.push('/facebook')
+  }
   return (
-    <div className="p-1 bg-white flex justify-between relative items-center sm:space-x-5 shadow-md w-[100vw]">
+    <div className="p-1 bg-white flex justify-between relative items-center sm:space-x-5 shadow-md w-[100vw] ">
       <div className="Left flex items-center space-x-2 sm:w-[25%]">
         <Link href="/">
           <Avatar src={"/Facebook.png"} className="Avatar" />
@@ -27,7 +42,7 @@ const Header = ({ props }) => {
         </span>
       </div>
       <div className="Center flex-1 justify-center flex">
-        <div className="space-x-5 bg-[#ecf0f1] w-fit py-1 sm:px-5 rounded-lg sm:max-w-[80%] md:flex-1 px-2 justify-around flex">
+        <div className="space-x-5 bg-[#ecf0f1] w-fit shadow-md py-1 sm:px-5 rounded-lg sm:max-w-[80%] md:flex-1 px-2 justify-around flex">
           <HomeRoundedIcon
             onClick={() => {
               props("Main");
@@ -81,7 +96,22 @@ const Header = ({ props }) => {
           </Avatar>
         </div>
 
-        <Avatar />
+        <div onClick={()=>{LogOut()}} className="sm:block hidden" >
+          <Avatar/>
+        </div>
+
+        <div onClick={()=>{DisplayMenu()}} className="block sm:hidden">
+          <Avatar/>
+          {Menu?
+          <div className="shadow-md absolute right-0 bg-black text-white top-[100%] px-5 py-2 space-y-2 text-start z-[300] rounded-l-md">
+            <p>Profile</p>
+            <Link href='/setting'>
+              <p>Seeting</p>
+            </Link>
+            <p onClick={()=>{LogOut()}}>LogOut</p>
+          </div>
+          :""}
+        </div>
       </div>
     </div>
   );

@@ -34,17 +34,17 @@ const EachStory = ({ props }) => {
           </div>
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative z-250">
           <Avatar
             src={
-              "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              "https://images.pexels.com/photos/11500404/pexels-photo-11500404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             }
             className="absolute z-10 top-[5px] left-[5px] border-2 border-blue-500"
           />
           <div className="Img rounded-lg absolute top-0 left-0">
             <Image
               src={
-                "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                "https://images.pexels.com/photos/11500404/pexels-photo-11500404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               }
               height={200}
               width={100}

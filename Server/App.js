@@ -7,7 +7,6 @@ let UserSchema = require("./DB/UserSchema");
 const { default: mongoose } = require("mongoose");
 let PORT = process.env.PORT || 3500;
 var jwt = require("jsonwebtoken");
-const { json } = require("express");
 
 App.post("/signup", async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);

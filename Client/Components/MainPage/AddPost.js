@@ -3,7 +3,7 @@ import { Avatar } from "@mui/material";
 
 const AddPost = () => {
   return (
-    <div className="flex flex-col bg-white p-2 rounded-md space-y-3">
+    <div className="flex flex-col bg-white p-2 rounded-md space-y-3 shadow-lg">
       <div className="Top text-xs flex items-center bg-white space-x-2">
         <Avatar
           src={
@@ -31,16 +31,16 @@ const AddPost = () => {
       <div className="Bottom flex justify-between p-1 md:text-xs sm:text-sm  text-sm text-gray-500">
         <div className="A flex items-center cursor-pointer">
           <img
-            className="hover:animate-pulse sm:h-[30px] h-[25px]"
+            className=" sm:h-[30px] h-[25px]"
             src="/Emoji/Facebook.png"
             alt=""
           />
           <p className="p-1">Video</p>
         </div>
 
-        <div className="flex">
+        <div className="flex cursor-pointer">
           <img
-            className="hover:animate-spin sm:h-[30px] h-[25px]"
+            className=" sm:h-[30px] h-[25px]"
             src="/Emoji/Photos.png"
             alt=""
           />
@@ -50,7 +50,7 @@ const AddPost = () => {
 
         <div className="C flex items-center cursor-pointer">
           <img
-            className="hover:animate-bounce sm:h-[30px] h-[25px]"
+            className=" sm:h-[30px] h-[25px]"
             src="/Emoji/Smile.png"
             alt=""
           />

@@ -10,6 +10,10 @@ let Reduce=(State={...InitialState} , Action)=>
                 ...State,
                 User:{...Action.payload},
             };
+        case "GET-USER":
+            return {
+                ...State.User,
+            }
         default:
             return State;
     }

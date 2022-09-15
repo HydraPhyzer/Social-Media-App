@@ -5,3 +5,9 @@ export let SetUser=(User)=>
         payload:User
     }
 }
+export let GetUser=()=>
+{
+    return{
+        type:"GET-USER",
+    }
+}
