@@ -38,28 +38,34 @@ const Setting = () => {
     if (!fileObj) {
       return;
     } else {
-      setImg(fileObj);
-
       const form = new FormData();
       form.append("User-Image", fileObj);
+      form.append("ID", User._id);
+      form.append("Image", fileObj.name);
+
+      // console.log(form)
 
       fetch(`http://localhost:3500/User-Image`, {
-        method: "POST",
+        method: "PUT",
         body: form,
-        headers: {
-          ...form.getHeaders,
-        },
-      }).then(async (Res) => {});
+        // headers: {
+        //   ...form.getHeaders,
+        // },
+      }).then(async (Res) => {
+        let A = await Res.json();
+        console.log(A);
+      });
 
+      setImg(fileObj);
       event.target.value = null;
     }
   };
 
   let SaveData = () => {
-    console.log(Img)
+    console.log(Img);
     fetch(`http://localhost:3500/setting`, {
       method: "POST",
-      body: JSON.stringify(Img? { Name, Email, Id , Image:Img.name }:{ Name, Email, Id}),
+      body: JSON.stringify({ Name, Email, Id }),
       headers: {
         "content-type": "application/json",
       },
@@ -76,8 +82,7 @@ const Setting = () => {
         <div className="h-[130px] w-[130px] sm:h-[150px] sm:w-[150px] md:h-[200px] md:w-[200px] relative">
           <Image
             className="rounded-full object-cover"
-            src={
-              "https://images.pexels.com/photos/13586038/pexels-photo-13586038.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load"
+            src={"/../../../Server/Public/Uploads/pexels-rosivan-morais-11500404.jpg"
             }
             layout="fill"
           />
