@@ -12,6 +12,7 @@ let Reduce=(State={...InitialState} , Action)=>
             };
         case "GET-USER":
             return {
+                ...State,
                 ...State.User,
             }
         default:

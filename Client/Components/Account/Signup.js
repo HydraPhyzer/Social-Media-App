@@ -19,6 +19,8 @@ const Signup = () => {
     return Stat.Reduce;
   });
 
+    console.log(State)
+
   let SignUp = () => {
     if (Name && Email && Pass) {
       setName("");
@@ -43,9 +45,9 @@ const Signup = () => {
           else
           {
             Dispatch(SetUser(Data.Result));
-            // localStorage.setItem("Token", Data.Token);
             setCookie("Token" , Data.Token)
-            Router.push('/')
+            // Router.push('/')
+            console.log("OK")
           }
         }
       });
