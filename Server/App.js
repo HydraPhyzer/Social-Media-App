@@ -66,7 +66,7 @@ App.put("/User-Image", upload, async (Req, Res) => {
     },
     {
       $set: {
-        Image: ImageCode,
+        Image: `${ImageCode}${Path.extname(Req.body.Name)}`,
       },
     }
   );
@@ -83,8 +83,6 @@ App.post("/setting", upload, async (Req, Res) => {
       $set: Req.body,
     }
   );
-  console.log(Result);
-
   Res.send(Req.body);
 });
 
@@ -92,10 +90,7 @@ App.post("/Get-User", async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.find(Req.body);
 
-  if(Result)
-  {
-    Res.send(Result)
-  }
+  Res.send(Result);
 });
 
 let Verify = (Req, Res, next) => {
