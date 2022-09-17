@@ -1,27 +1,34 @@
 let express = require("express");
 let App = express();
 let cors = require("cors");
+let UserSchema = require("./DB/UserSchema");
+let PORT = process.env.PORT || 3500;
+let Path = require("path");
+let DIR = Path.join(__dirname, "/Public/Uploads");
+var jwt = require("jsonwebtoken");
 const multer = require("multer");
+const { default: mongoose } = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 App.use(express.json());
 App.use(cors());
-let UserSchema = require("./DB/UserSchema");
-const { default: mongoose } = require("mongoose");
-let PORT = process.env.PORT || 3500;
-var jwt = require("jsonwebtoken");
-let Path = require("path");
-let Router = express.Router();
+
+App.use("/Public", express.static(process.cwd() + "/Public"));
+let ImageCode;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, `${__dirname}/Public/Uploads`);
+    cb(null, `${DIR}`);
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = file.originalname + Path.extname(file.originalname);
+    ImageCode = uuidv4();
+    console.log(req.body);
+    const uniqueSuffix = ImageCode + Path.extname(file.originalname);
     cb(null, uniqueSuffix);
   },
 });
 
-const upload = multer({ storage: storage }).single("User-Image");
+// const upload = multer({ storage: storage }).single("User-Image");
+const upload = multer({ storage: storage }).any("User-Image");
 
 App.post("/signup", async (Req, Res) => {
   // let Body={...Request.Body , Image:}
@@ -59,13 +66,11 @@ App.put("/User-Image", upload, async (Req, Res) => {
     },
     {
       $set: {
-        Image: Req.body.Image,
+        Image: ImageCode,
       },
     }
   );
-  console.log(Result);
-
-  Res.send(Req.body);
+  Res.send({ ImageCode, Extension: Path.extname(Req.body.Name) });
 });
 
 App.post("/setting", upload, async (Req, Res) => {
@@ -81,6 +86,16 @@ App.post("/setting", upload, async (Req, Res) => {
   console.log(Result);
 
   Res.send(Req.body);
+});
+
+App.post("/Get-User", async (Req, Res) => {
+  let Model = new mongoose.model("users", UserSchema);
+  let Result = await Model.find(Req.body);
+
+  if(Result)
+  {
+    Res.send(Result)
+  }
 });
 
 let Verify = (Req, Res, next) => {
