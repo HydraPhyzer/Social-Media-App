@@ -1,75 +1,104 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import { SetUser } from "../Redux/Actions";
+import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import BrushIcon from "@mui/icons-material/Brush";
 import EditIcon from "@mui/icons-material/Edit";
 import Image from "next/image";
-import { useRef } from "react";
 let FormData = require("form-data");
 
 const Setting = () => {
   let [User, setUser] = useState("");
   let [Name, setName] = useState();
-  let [Email, setEmail] = useState();
-  let [Id, setId] = useState();
-  let [Img, setImg] = useState(null);
   let [Mutable, setMutable] = useState(false);
 
   const ImageSelector = useRef(null);
   let Router = useRouter();
 
+  let Dispatch = useDispatch();
+
   let State = useSelector((Stat) => {
     return Stat.Reduce;
   });
 
+  let MyFunc = () => {
+    fetch(`http://localhost:3500/Get-User`, {
+      method: "POST",
+      body: JSON.stringify({ _id: State?.User?._id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (Res) => {
+      let Response = await Res.json();
+      Dispatch(SetUser(Response[0]));
+      setName(State?.User?.Name);
+    });
+  };
+
   useEffect(() => {
-    setUser(State?.User[0]);
-    setName(State?.User[0]?.Name);
-    setEmail(State?.User[0]?.Email);
-    setId(State?.User[0]?._id);
+    // fetch(`http://localhost:3500/Get-User`, {
+    //   method: "POST",
+    //   body: JSON.stringify({ _id: State?.User?._id }),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // }).then(async (Res) => {
+    //   let Response = await Res.json();
+    //   Dispatch(SetUser(Response[0]));
+    //   setName(State?.User?.Name);
+    // });
+    MyFunc()
   }, []);
 
   const ClickHandle = () => {
     ImageSelector.current.click();
   };
-  const FileChange = (event) => {
+  const FileChange = async (event) => {
     const fileObj = event.target.files && event.target.files[0];
     if (!fileObj) {
       return;
     } else {
       const form = new FormData();
       form.append("User-Image", fileObj);
-      form.append("ID", User._id);
-      form.append("Image", fileObj.name);
+      form.append("ID", State?.User?._id);
+      form.append("Name", fileObj.name);
 
-      // console.log(form)
-
-      fetch(`http://localhost:3500/User-Image`, {
+      await fetch(`http://localhost:3500/User-Image`, {
         method: "PUT",
         body: form,
-        // headers: {
-        //   ...form.getHeaders,
-        // },
-      }).then(async (Res) => {
-        let A = await Res.json();
-        console.log(A);
       });
 
-      setImg(fileObj);
+      await fetch(`http://localhost:3500/Get-User`, {
+        method: "POST",
+        body: JSON.stringify({ _id: State?.User?._id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(async (Res) => {
+        let Response = await Res.json();
+        Dispatch(SetUser(Response[0]));
+        setUser(Response[0]);
+      });
       event.target.value = null;
     }
   };
 
   let SaveData = () => {
-    console.log(Img);
     fetch(`http://localhost:3500/setting`, {
       method: "POST",
-      body: JSON.stringify({ Name, Email, Id }),
+      body: JSON.stringify({
+        Name,
+        Email: State?.User?.Email,
+        Id: State?.User?._id,
+      }),
       headers: {
         "content-type": "application/json",
       },
-    }).then(async (Res) => {});
+    }).then(async (Res) => {
+      MyFunc()
+      Router.push("/");
+    });
   };
 
   return (
@@ -77,14 +106,14 @@ const Setting = () => {
       <Head>
         <title>Setting</title>
       </Head>
-      {console.log(State)}
       <div className="flex justify-center items-center flex-col space-y-5 h-[100vh]">
-        <div className="h-[130px] w-[130px] sm:h-[150px] sm:w-[150px] md:h-[200px] md:w-[200px] relative">
+        <div className="h-[130px] w-[130px] sm:h-[150px] sm:w-[150px] md:h-[200px] md:w-[200px] relative object-contain">
           <Image
-            className="rounded-full object-cover"
-            src={"/../../../Server/Public/Uploads/pexels-rosivan-morais-11500404.jpg"
-            }
+            className="rounded-full "
+            src={`http://localhost:3500/Public/Uploads/${State?.User?.Image}`}
             layout="fill"
+            objectFit="cover"
+            alt="User Image"
           />
           <input
             style={{ display: "none" }}
@@ -128,14 +157,19 @@ const Setting = () => {
             <input
               type="string"
               id="Email"
-              value={Email}
+              value={State?.User?.Email}
               className="text-gray-500"
             />
           </div>
 
           <div className="flex flex-col space-y-2">
             <label htmlFor="Id">User ID</label>
-            <input type="string" id="Id" value={Id} className="text-gray-500" />
+            <input
+              type="string"
+              id="Id"
+              value={State?.User?._id}
+              className="text-gray-500"
+            />
 
             <button
               onClick={() => {

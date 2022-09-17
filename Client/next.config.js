@@ -9,6 +9,6 @@ module.exports = nextConfig
 
 module.exports={
   images:{
-    domains:['www.esafety.gov.au' , 'images.pexels.com']
+    domains:['www.esafety.gov.au' , 'images.pexels.com','localhost']
   }
 }

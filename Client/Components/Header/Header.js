@@ -9,23 +9,26 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import MarkUnreadChatAltRoundedIcon from "@mui/icons-material/MarkUnreadChatAltRounded";
 import DeviceHubIcon from "@mui/icons-material/DeviceHub";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
-import {deleteCookie} from 'cookies-next'
+import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import {useState} from 'react' 
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Header = ({ props }) => {
-  let [Menu,setMenu]=useState(false);
+  let [Menu, setMenu] = useState(false);
 
-  let DisplayMenu=()=>
-  {
+  let State = useSelector((Stat) => {
+    return Stat.Reduce;
+  });
+
+  let DisplayMenu = () => {
     setMenu(!Menu);
-  }
-  let Router=useRouter()
-  let LogOut=()=>
-  { 
-    deleteCookie("Token")
-    Router.push('/facebook')
-  }
+  };
+  let Router = useRouter();
+  let LogOut = () => {
+    deleteCookie("Token");
+    Router.push("/facebook");
+  };
   return (
     <div className="p-1 bg-white flex justify-between relative items-center sm:space-x-5 shadow-md w-[100vw] ">
       <div className="Left flex items-center space-x-2 sm:w-[25%]">
@@ -96,21 +99,39 @@ const Header = ({ props }) => {
           </Avatar>
         </div>
 
-        <div onClick={()=>{LogOut()}} className="sm:block hidden" >
-          <Avatar/>
+        <div
+          onClick={() => {
+            LogOut();
+          }}
+          className="sm:block hidden"
+        >
+          <Avatar src={`http://localhost:3500/Public/Uploads/${State?.User[0]?.Image || State?.User?.Image}`} />
         </div>
 
-        <div onClick={()=>{DisplayMenu()}} className="block sm:hidden">
-          <Avatar/>
-          {Menu?
-          <div className="shadow-md absolute right-0 bg-black text-white top-[100%] px-5 py-2 space-y-2 text-start z-[300] rounded-l-md">
-            <p>Profile</p>
-            <Link href='/setting'>
-              <p>Seeting</p>
-            </Link>
-            <p onClick={()=>{LogOut()}}>LogOut</p>
-          </div>
-          :""}
+        <div
+          onClick={() => {
+            DisplayMenu();
+          }}
+          className="block sm:hidden"
+        >
+          <Avatar src={`http://localhost:3500/Public/Uploads/${State?.User[0]?.Image || State?.User?.Image}`}/>
+          {Menu ? (
+            <div className="shadow-md absolute right-0 bg-black text-white top-[100%] px-5 py-2 space-y-2 text-start z-[300] rounded-l-md">
+              <p>Profile</p>
+              <Link href="/setting">
+                <p>Seeting</p>
+              </Link>
+              <p
+                onClick={() => {
+                  LogOut();
+                }}
+              >
+                LogOut
+              </p>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
