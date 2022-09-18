@@ -49,6 +49,7 @@ App.post("/signup", async (Req, Res) => {
 App.post("/login", async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.find(Req.body);
+  // console.log(Result)
 
   if (Result.length > 0) {
     let Token = jwt.sign({ Result }, "Facebook", { expiresIn: "1h" });

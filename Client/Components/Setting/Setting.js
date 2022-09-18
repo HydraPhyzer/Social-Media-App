@@ -9,7 +9,7 @@ import Image from "next/image";
 let FormData = require("form-data");
 
 const Setting = () => {
-  let [User, setUser] = useState("");
+  // let [CurrentUser, setCurrentUser] = useState("");
   let [Name, setName] = useState();
   let [Mutable, setMutable] = useState(false);
 
@@ -23,9 +23,10 @@ const Setting = () => {
   });
 
   let MyFunc = () => {
+    console.log(State)
     fetch(`http://localhost:3500/Get-User`, {
       method: "POST",
-      body: JSON.stringify({ _id: State?.User?._id }),
+      body: JSON.stringify({ _id: State?.User[0]?._id || State?.User?._id}),
       headers: {
         "Content-Type": "application/json",
       },
@@ -37,17 +38,6 @@ const Setting = () => {
   };
 
   useEffect(() => {
-    // fetch(`http://localhost:3500/Get-User`, {
-    //   method: "POST",
-    //   body: JSON.stringify({ _id: State?.User?._id }),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // }).then(async (Res) => {
-    //   let Response = await Res.json();
-    //   Dispatch(SetUser(Response[0]));
-    //   setName(State?.User?.Name);
-    // });
     MyFunc()
   }, []);
 
@@ -78,7 +68,6 @@ const Setting = () => {
       }).then(async (Res) => {
         let Response = await Res.json();
         Dispatch(SetUser(Response[0]));
-        setUser(Response[0]);
       });
       event.target.value = null;
     }
@@ -137,7 +126,7 @@ const Setting = () => {
               <input
                 type="string"
                 id="Name"
-                value={Name}
+                value={Name || State?.User[0]?.Name}
                 className="text-gray-500"
                 onChange={(E) => {
                   Mutable ? setName(E.target.value) : setName(Name);

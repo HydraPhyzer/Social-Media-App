@@ -84,7 +84,7 @@ const Header = ({ props }) => {
           </div>
         </div>
       </div>
-      <div className="Right flex items-center sm:space-x-2 sm:w-[24%] justify-end p-1">
+      <div className="Right flex items-center sm:space-x-2 sm:w-[24%] justify-end p-1 ">
         <div className="sm:flex justify-center items-center hidden">
           <Avatar sx={{ background: "#3498db" }}>
             <Link href="/setting">

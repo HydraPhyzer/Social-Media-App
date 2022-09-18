@@ -46,8 +46,7 @@ const Signup = () => {
           {
             Dispatch(SetUser(Data.Result));
             setCookie("Token" , Data.Token)
-            // Router.push('/')
-            console.log("OK")
+            Router.push('/')
           }
         }
       });
