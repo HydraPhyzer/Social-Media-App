@@ -8,8 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Image from "next/image";
 let FormData = require("form-data");
 
-const Setting = () => {
-  // let [CurrentUser, setCurrentUser] = useState("");
+const Setting = ({ Status }) => {
   let [Name, setName] = useState();
   let [Mutable, setMutable] = useState(false);
 
@@ -23,22 +22,23 @@ const Setting = () => {
   });
 
   let MyFunc = () => {
-    console.log(State)
+    console.log(State);
     fetch(`http://localhost:3500/Get-User`, {
       method: "POST",
-      body: JSON.stringify({ _id: State?.User[0]?._id || State?.User?._id}),
+      body: JSON.stringify({ _id: State?.User[0]?._id || State?.User?._id }),
       headers: {
         "Content-Type": "application/json",
       },
     }).then(async (Res) => {
       let Response = await Res.json();
+
       Dispatch(SetUser(Response[0]));
       setName(State?.User?.Name);
     });
   };
 
   useEffect(() => {
-    MyFunc()
+      MyFunc();
   }, []);
 
   const ClickHandle = () => {
@@ -85,7 +85,7 @@ const Setting = () => {
         "content-type": "application/json",
       },
     }).then(async (Res) => {
-      MyFunc()
+      MyFunc();
       Router.push("/");
     });
   };

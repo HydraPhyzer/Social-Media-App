@@ -11,9 +11,21 @@ const { default: mongoose } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 App.use(express.json());
 App.use(cors());
-
 App.use("/Public", express.static(process.cwd() + "/Public"));
 let ImageCode;
+
+let Verify = (Req, Res, next) => {
+  let Token = Req.headers["authorization"];
+  if (Token != undefined) {
+    jwt.verify(Token, "Facebook", (Err, Done) => {
+      if (Err) {
+        Res.send({ Error: "User Not Authorized" });
+      } else {
+        next();
+      }
+    });
+  }
+};
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,11 +39,9 @@ const storage = multer.diskStorage({
   },
 });
 
-// const upload = multer({ storage: storage }).single("User-Image");
-const upload = multer({ storage: storage }).any("User-Image");
+const upload = multer({ storage: storage }).single("User-Image");
 
 App.post("/signup", async (Req, Res) => {
-  // let Body={...Request.Body , Image:}
   let Model = new mongoose.model("users", UserSchema);
   let Data = new Model(Req.body);
 
@@ -49,7 +59,6 @@ App.post("/signup", async (Req, Res) => {
 App.post("/login", async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.find(Req.body);
-  // console.log(Result)
 
   if (Result.length > 0) {
     let Token = jwt.sign({ Result }, "Facebook", { expiresIn: "1h" });
@@ -74,7 +83,7 @@ App.put("/User-Image", upload, async (Req, Res) => {
   Res.send({ ImageCode, Extension: Path.extname(Req.body.Name) });
 });
 
-App.post("/setting", upload, async (Req, Res) => {
+App.post("/setting", Verify ,upload ,async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.updateOne(
     {
@@ -87,25 +96,12 @@ App.post("/setting", upload, async (Req, Res) => {
   Res.send(Req.body);
 });
 
-App.post("/Get-User", async (Req, Res) => {
+App.post("/Get-User" ,async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.find(Req.body);
 
   Res.send(Result);
 });
-
-let Verify = (Req, Res, next) => {
-  let Token = Req.headers["authorization"];
-  if (Token != undefined) {
-    jwt.verify(Token, "Facebook", (Err, Done) => {
-      if (Err) {
-        Res.send({ Error: "User Not Authorized" });
-      } else {
-        next();
-      }
-    });
-  }
-};
 
 App.get("/facebook", Verify, async (Req, Res) => {
   Res.send({ Pass: true });
