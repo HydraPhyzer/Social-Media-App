@@ -113,7 +113,7 @@ const Header = ({ props }) => {
         >
           <Avatar
             src={`http://localhost:3500/Public/Uploads/${
-              State?.User.Image || State?.User[0].Image
+              State?.User?.Image || State?.User[0]?.Image
             }`}
           />
         </div>
@@ -126,7 +126,7 @@ const Header = ({ props }) => {
         >
           <Avatar
             src={`http://localhost:3500/Public/Uploads/${
-              State?.User.Image || State?.User[0].Image
+              State?.User?.Image || State?.User[0]?.Image
             }`}
           />
           {Menu ? (

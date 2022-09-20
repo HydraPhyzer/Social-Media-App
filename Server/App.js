@@ -6,7 +6,7 @@ let PORT = process.env.PORT || 3500;
 let Path = require("path");
 let DIR = Path.join(__dirname, "/Public/Uploads");
 var jwt = require("jsonwebtoken");
-let FS=require("fs");
+let FS = require("fs");
 const multer = require("multer");
 const { default: mongoose } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
@@ -32,10 +32,22 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, `${DIR}`);
   },
-  filename: function (req, file, cb) {
-    ImageCode = uuidv4();
-    const uniqueSuffix = ImageCode + Path.extname(file.originalname);
-    cb(null, uniqueSuffix);
+  filename: async function (req, file, cb) {
+    let Model = new mongoose.model("users", UserSchema);
+    let Result = await Model.find({ _id: req.body.ID });
+    if (Result[0].Image) {
+      if (FS.existsSync(`${__dirname}/Public/Uploads/${Result[0].Image}`)) {
+        FS.unlinkSync(`${__dirname}/Public/Uploads/${Result[0].Image}`);
+      }
+      ImageCode = uuidv4();
+      const uniqueSuffix = ImageCode + Path.extname(file.originalname);
+      cb(null, uniqueSuffix);
+
+    } else {
+      ImageCode = uuidv4();
+      const uniqueSuffix = ImageCode + Path.extname(file.originalname);
+      cb(null, uniqueSuffix);
+    }
   },
 });
 
@@ -46,8 +58,8 @@ App.post("/signup", async (Req, Res) => {
   let Data = new Model(Req.body);
 
   let PreCheck = await Model.find({ Email: Req.body.Email });
-
-  if (PreCheck.length > 1) {
+  
+  if (PreCheck.length >= 1) {
     Res.send({ Error: "Unable to Register" });
   } else {
     let Result = await Data.save();
@@ -83,7 +95,7 @@ App.put("/User-Image", upload, async (Req, Res) => {
   Res.send({ ImageCode, Extension: Path.extname(Req.body.Name) });
 });
 
-App.post("/setting",Verify ,upload ,async (Req, Res) => {
+App.post("/setting", Verify, upload, async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.updateOne(
     {
@@ -96,7 +108,7 @@ App.post("/setting",Verify ,upload ,async (Req, Res) => {
   Res.send(Req.body);
 });
 
-App.post("/Get-User" ,async (Req, Res) => {
+App.post("/Get-User", async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.find(Req.body);
 

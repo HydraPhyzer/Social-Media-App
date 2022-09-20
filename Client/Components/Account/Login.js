@@ -41,7 +41,7 @@ const Login = () => {
           }
           else
           {
-            Dispatch(SetUser(Data.Result));
+            Dispatch(SetUser(Data.Result[0]));
             setCookie("Token" , Data.Token)
             Router.push('/')
           }

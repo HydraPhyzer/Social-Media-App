@@ -26,13 +26,12 @@ const Setting = ({ Status }) => {
     console.log(State);
     fetch(`http://localhost:3500/Get-User`, {
       method: "POST",
-      body: JSON.stringify({ _id: State?.User?._id || State?.User?._id }),
+      body: JSON.stringify({ _id: State?.User?._id}),
       headers: {
         "Content-Type": "application/json",
       },
     }).then(async (Res) => {
       let Response = await Res.json();
-
       Dispatch(SetUser(Response[0]));
       setName(State?.User?.Name);
     });
@@ -69,6 +68,7 @@ const Setting = ({ Status }) => {
       }).then(async (Res) => {
         let Response = await Res.json();
         Dispatch(SetUser(Response[0]));
+        console.log(State)
       });
       event.target.value = null;
     }
@@ -87,7 +87,7 @@ const Setting = ({ Status }) => {
         authorization: getCookie('Token')
       },
     }).then(async (Res) => {
-      MyFunc();
+      MyFunc();  
       Router.push("/");
     });
   };
@@ -128,7 +128,7 @@ const Setting = ({ Status }) => {
               <input
                 type="string"
                 id="Name"
-                value={Name || State?.User[0]?.Name}
+                value={Name}
                 className="text-gray-500"
                 onChange={(E) => {
                   Mutable ? setName(E.target.value) : setName(Name);

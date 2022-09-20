@@ -4,10 +4,10 @@ const nextConfig = {
   swcMinify: true,
 }
 
-
-module.exports = nextConfig
+// module.exports = ;
 
 module.exports={
+  nextConfig,
   images:{
     domains:['www.esafety.gov.au' , 'images.pexels.com','localhost']
   }

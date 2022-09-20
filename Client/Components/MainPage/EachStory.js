@@ -2,15 +2,21 @@ import React from "react";
 import Image from "next/image";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Avatar } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const EachStory = ({ props }) => {
+
+  let State = useSelector((Stat) => {
+    return Stat.Reduce;
+  });
+
   return (
     <div className="bg-black rounded-lg h-[200px] w-[100px] overflow-hidden">
       {props == "First" ? (
         <div className="relative">
           <Avatar
             src={
-              "https://www.esafety.gov.au/sites/default/files/2019-08/Remove%20images%20and%20video.jpg"
+              `http://localhost:3500/Public/Uploads/${State?.User?.Image}`
             }
             className="absolute z-10 top-[5px] left-[5px] border-2 border-blue-500"
           />
@@ -19,7 +25,7 @@ const EachStory = ({ props }) => {
             <div className="Img">
               <Image
                 src={
-                  "https://www.esafety.gov.au/sites/default/files/2019-08/Remove%20images%20and%20video.jpg"
+                  `http://localhost:3500/Public/Uploads/${State?.User?.Image}`
                 }
                 height={150}
                 width={100}

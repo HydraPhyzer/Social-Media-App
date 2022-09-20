@@ -2,13 +2,13 @@ let InitialState={
     User:{},
 };
 
-let Reduce=(State={...InitialState} , Action)=>
+let Reduce=(State=InitialState , Action)=>
 {
     switch (Action.type) {
         case "SET-USER":
             return {
                 ...State,
-                User:{...Action.payload},
+                User:Action.payload,
             };
         case "GET-USER":
             return {

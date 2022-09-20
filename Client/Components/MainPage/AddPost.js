@@ -1,13 +1,17 @@
 import React from "react";
 import { Avatar } from "@mui/material";
+import {useSelector} from "react-redux";
 
 const AddPost = () => {
+  let State = useSelector((Stat) => {
+    return Stat.Reduce;
+  });
   return (
     <div className="flex flex-col bg-white p-2 rounded-md space-y-3 shadow-lg">
       <div className="Top text-xs flex items-center bg-white space-x-2">
         <Avatar
           src={
-            "https://www.esafety.gov.au/sites/default/files/2019-08/Remove%20images%20and%20video.jpg"
+            `http://localhost:3500/Public/Uploads/${State?.User?.Image}`
           }
         />
         <input
