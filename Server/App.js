@@ -6,6 +6,7 @@ let PORT = process.env.PORT || 3500;
 let Path = require("path");
 let DIR = Path.join(__dirname, "/Public/Uploads");
 var jwt = require("jsonwebtoken");
+let FS=require("fs");
 const multer = require("multer");
 const { default: mongoose } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
@@ -33,7 +34,6 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     ImageCode = uuidv4();
-    console.log(req.body);
     const uniqueSuffix = ImageCode + Path.extname(file.originalname);
     cb(null, uniqueSuffix);
   },
@@ -83,7 +83,7 @@ App.put("/User-Image", upload, async (Req, Res) => {
   Res.send({ ImageCode, Extension: Path.extname(Req.body.Name) });
 });
 
-App.post("/setting", Verify ,upload ,async (Req, Res) => {
+App.post("/setting",Verify ,upload ,async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
   let Result = await Model.updateOne(
     {

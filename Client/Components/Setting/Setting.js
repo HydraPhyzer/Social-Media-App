@@ -7,6 +7,7 @@ import BrushIcon from "@mui/icons-material/Brush";
 import EditIcon from "@mui/icons-material/Edit";
 import Image from "next/image";
 let FormData = require("form-data");
+import { getCookie,getCookies } from "cookies-next";
 
 const Setting = ({ Status }) => {
   let [Name, setName] = useState();
@@ -25,7 +26,7 @@ const Setting = ({ Status }) => {
     console.log(State);
     fetch(`http://localhost:3500/Get-User`, {
       method: "POST",
-      body: JSON.stringify({ _id: State?.User[0]?._id || State?.User?._id }),
+      body: JSON.stringify({ _id: State?.User?._id || State?.User?._id }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -50,9 +51,9 @@ const Setting = ({ Status }) => {
       return;
     } else {
       const form = new FormData();
-      form.append("User-Image", fileObj);
-      form.append("ID", State?.User?._id);
       form.append("Name", fileObj.name);
+      form.append("ID", State?.User?._id);
+      form.append("User-Image", fileObj);
 
       await fetch(`http://localhost:3500/User-Image`, {
         method: "PUT",
@@ -83,6 +84,7 @@ const Setting = ({ Status }) => {
       }),
       headers: {
         "content-type": "application/json",
+        authorization: getCookie('Token')
       },
     }).then(async (Res) => {
       MyFunc();

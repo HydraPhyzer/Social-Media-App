@@ -60,3 +60,21 @@ body
   height: 200px;
   width: 200px;
 }
+
+.Anime
+{
+  animation-name: Harry;
+  animation-duration: 200ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+@keyframes Harry
+{
+  from{
+    transform:scale(0);
+  }
+  to{
+    transform: scale(1);
+  }
+}

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect,useState } from "react";
 import Setting from "../Components/Setting/Setting";
+import { getCookie } from "cookies-next";
 
 const setting = ({ Status }) => {
   let [ShowPage, setShowPage] = useState(false);

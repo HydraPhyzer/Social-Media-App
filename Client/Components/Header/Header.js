@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
@@ -9,6 +9,10 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import MarkUnreadChatAltRoundedIcon from "@mui/icons-material/MarkUnreadChatAltRounded";
 import DeviceHubIcon from "@mui/icons-material/DeviceHub";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+import Person2Icon from "@mui/icons-material/Person2";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -94,9 +98,11 @@ const Header = ({ props }) => {
         </div>
 
         <div className="sm:flex justify-center items-center hidden">
-          <Avatar sx={{ background: "#3498db" }}>
-            <MarkUnreadChatAltRoundedIcon className="text-white hover:animate-pulse" />
-          </Avatar>
+          <Link href="/chats">
+            <Avatar sx={{ background: "#3498db" }}>
+              <MarkUnreadChatAltRoundedIcon className="text-white hover:animate-pulse" />
+            </Avatar>
+          </Link>
         </div>
 
         <div
@@ -105,7 +111,11 @@ const Header = ({ props }) => {
           }}
           className="sm:block hidden"
         >
-          <Avatar src={`http://localhost:3500/Public/Uploads/${State?.User[0]?.Image || State?.User?.Image}`} />
+          <Avatar
+            src={`http://localhost:3500/Public/Uploads/${
+              State?.User.Image || State?.User[0].Image
+            }`}
+          />
         </div>
 
         <div
@@ -114,20 +124,32 @@ const Header = ({ props }) => {
           }}
           className="block sm:hidden"
         >
-          <Avatar src={`http://localhost:3500/Public/Uploads/${State?.User[0]?.Image || State?.User?.Image}`}/>
+          <Avatar
+            src={`http://localhost:3500/Public/Uploads/${
+              State?.User.Image || State?.User[0].Image
+            }`}
+          />
           {Menu ? (
-            <div className="shadow-md absolute right-0 bg-black text-white top-[100%] px-5 py-2 space-y-2 text-start z-[300] rounded-l-md">
-              <p>Profile</p>
+            <div className="shadow-md absolute right-0 bg-black text-white top-[100%] px-5 py-2 space-y-2 text-start z-[300] rounded-l-md flex flex-col items-start Anime">
+              <div className="flex space-x-5 items-center">
+                <Person2Icon className="bg-white rounded-full p-1 text-black" />
+                <p>Profile</p>
+              </div>
               <Link href="/setting">
-                <p>Seeting</p>
+                <div className="flex space-x-5 items-center">
+                  <SettingsIcon className="bg-white rounded-full p-1 text-black" />
+                  <p>Setting</p>
+                </div>
               </Link>
-              <p
+              <div
                 onClick={() => {
                   LogOut();
                 }}
+                className="flex space-x-5 items-center"
               >
-                LogOut
-              </p>
+                <ExitToAppIcon className="bg-white rounded-full p-1 text-black" />
+                <p>LogOut</p>
+              </div>
             </div>
           ) : (
             ""
