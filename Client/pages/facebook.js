@@ -49,7 +49,7 @@ const facebook = ({ Status }) => {
             <RequestSidebar />
           </section>
 
-          <section className="bg-gray w-[100%] sm:w-[50%]">
+          <section className="bg-gray w-[100%] sm:w-[50%] overflow-y-scroll Scroll">
             {Main ? <MainPage /> : ""}
             {Friend ? <FriendPage /> : ""}
             {Video ? <VideoPage /> : ""}

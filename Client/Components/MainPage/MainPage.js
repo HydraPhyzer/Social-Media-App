@@ -1,4 +1,5 @@
 import React from "react";
+import AllPosts from "../Posts/AllPosts";
 import AddPost from "./AddPost";
 import Stories from "./Stories";
 const MainPage = () => {
@@ -8,8 +9,9 @@ const MainPage = () => {
         <Stories />
       </div>
 
-      <div className="w-[100%]">
+      <div className="w-[100%] space-y-5">
         <AddPost />
+        <AllPosts/>
       </div>
     </div>
   );

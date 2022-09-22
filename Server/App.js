@@ -5,16 +5,19 @@ let UserSchema = require("./DB/UserSchema");
 let PORT = process.env.PORT || 3500;
 let Path = require("path");
 let DIR = Path.join(__dirname, "/Public/Uploads");
+let DIR2 = Path.join(__dirname, "/Public/PostsImages");
 var jwt = require("jsonwebtoken");
 let FS = require("fs");
 const multer = require("multer");
 const { default: mongoose } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
+let PostSchema = require("./DB/PostSchema");
 App.use(express.json());
 App.use(cors());
 App.use("/Public", express.static(process.cwd() + "/Public"));
-let ImageCode;
+// ===================================================================
 
+let ImageCode;
 let Verify = (Req, Res, next) => {
   let Token = Req.headers["authorization"];
   if (Token != undefined) {
@@ -30,23 +33,37 @@ let Verify = (Req, Res, next) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, `${DIR}`);
+
+    if(req?.body?.POSTIMAGE)
+    {
+      cb(null, `${DIR2}`);
+    }
+    else
+    {
+      console.log(req.body);
+      cb(null, `${DIR}`);
+    }
   },
   filename: async function (req, file, cb) {
-    let Model = new mongoose.model("users", UserSchema);
-    let Result = await Model.find({ _id: req.body.ID });
-    if (Result[0].Image) {
-      if (FS.existsSync(`${__dirname}/Public/Uploads/${Result[0].Image}`)) {
-        FS.unlinkSync(`${__dirname}/Public/Uploads/${Result[0].Image}`);
-      }
+    if (req?.body?.POSTIMAGE) {
       ImageCode = uuidv4();
       const uniqueSuffix = ImageCode + Path.extname(file.originalname);
       cb(null, uniqueSuffix);
-
     } else {
-      ImageCode = uuidv4();
-      const uniqueSuffix = ImageCode + Path.extname(file.originalname);
-      cb(null, uniqueSuffix);
+      let Model = new mongoose.model("users", UserSchema);
+      let Result = await Model.find({ _id: req.body.ID });
+      if (Result[0].Image) {
+        if (FS.existsSync(`${__dirname}/Public/Uploads/${Result[0].Image}`)) {
+          FS.unlinkSync(`${__dirname}/Public/Uploads/${Result[0].Image}`);
+        }
+        ImageCode = uuidv4();
+        const uniqueSuffix = ImageCode + Path.extname(file.originalname);
+        cb(null, uniqueSuffix);
+      } else {
+        ImageCode = uuidv4();
+        const uniqueSuffix = ImageCode + Path.extname(file.originalname);
+        cb(null, uniqueSuffix);
+      }
     }
   },
 });
@@ -58,7 +75,7 @@ App.post("/signup", async (Req, Res) => {
   let Data = new Model(Req.body);
 
   let PreCheck = await Model.find({ Email: Req.body.Email });
-  
+
   if (PreCheck.length >= 1) {
     Res.send({ Error: "Unable to Register" });
   } else {
@@ -113,6 +130,46 @@ App.post("/Get-User", async (Req, Res) => {
   let Result = await Model.find(Req.body);
 
   Res.send(Result);
+});
+
+App.post("/Add-Post", async (Req, Res) => {
+  let Model = new mongoose.model("posts", PostSchema);
+  let {
+    MyName,
+    MyProfileID,
+    Caption,
+    Image,
+    Video,
+    TimeStamp,
+    Comments,
+    Likes,
+    Shares,
+  } = Req.body;
+
+  let Results = await Model.find({ MyProfileID });
+
+  if (Results.length == 0) {
+    let Data = new Model({
+      MyName,
+      MyProfileID,
+      MyPosts: {
+        Caption,
+        Image,
+        Video,
+        TimeStamp,
+        Comments,
+        Likes,
+        Shares,
+      },
+    });
+    await Data.save();
+  } else {
+    console.log("Already Available");
+  }
+});
+
+App.post("/Post-Image", upload, async (Req, Res) => {
+  
 });
 
 App.get("/facebook", Verify, async (Req, Res) => {
