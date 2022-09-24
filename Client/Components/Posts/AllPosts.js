@@ -32,7 +32,7 @@ const AllPosts = () => {
         State?.UserPosts?.MyPosts?.sort(
           (A, B) => B.TimeStamp - A.TimeStamp
         ).map((Element) => {
-          return <EachPost Element={Element} />;
+          return <EachPost Name={State?.UserPosts?.MyName}  Element={Element} />;
         })
       ) : (
         <p className="text-center text-gray-500 p-2 border-dashed border-2 border-gray-500">

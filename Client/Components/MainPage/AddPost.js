@@ -53,7 +53,7 @@ const AddPost = () => {
       Caption: Text,
       Image: PostImage ? PostImage?.name : "",
       Video: "",
-      TimeStamp: Date.now(),
+      TimeStamp:Date.now(),
 
       Comments: 0,
       Likes: 0,
