@@ -8,14 +8,14 @@ let DIR = Path.join(__dirname, "/Public/Uploads");
 let DIR2 = Path.join(__dirname, "/Public/PostsImages");
 var jwt = require("jsonwebtoken");
 let FS = require("fs");
+let PostSchema = require("./DB/PostSchema");
 const multer = require("multer");
 const { default: mongoose, Mongoose } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
-let PostSchema = require("./DB/PostSchema");
 App.use(express.json());
 App.use(cors());
 App.use("/Public", express.static(process.cwd() + "/Public"));
-// ===================================================================
+// ==================================================================
 
 let ImageCode;
 let Verify = (Req, Res, next) => {
@@ -43,8 +43,14 @@ const storage = multer.diskStorage({
   filename: async function (req, file, cb) {
     if (req?.body?.POSTIMAGE) {
       ImageCode = uuidv4();
-      if (FS.existsSync(`${__dirname}/Public/PostsImages/${req.body?.PREVIEWCODE}${req.body?.PREVIEWEXT}`)) {
-        FS.unlinkSync(`${__dirname}/Public/PostsImages/${req.body?.PREVIEWCODE}${req.body?.PREVIEWEXT}`);
+      if (
+        FS.existsSync(
+          `${__dirname}/Public/PostsImages/${req.body?.PREVIEWCODE}${req.body?.PREVIEWEXT}`
+        )
+      ) {
+        FS.unlinkSync(
+          `${__dirname}/Public/PostsImages/${req.body?.PREVIEWCODE}${req.body?.PREVIEWEXT}`
+        );
       }
       const uniqueSuffix = ImageCode + Path.extname(file.originalname);
       cb(null, uniqueSuffix);
@@ -151,14 +157,51 @@ App.post("/Add-Post", async (Req, Res) => {
     let Data = new Model({
       MyName,
       MyProfileID,
-      MyPosts: [{ Caption, Image:Image? `${ImageCode}${Path.extname(Image)}`:"", Video, TimeStamp, Comments, Likes, Shares }],
+      MyPosts: [
+        {
+          Caption,
+          Image: Image ? `${ImageCode}${Path.extname(Image)}` : "",
+          Video,
+          TimeStamp,
+          Comments,
+          Likes,
+          Shares,
+        },
+      ],
     });
     await Data.save();
   } else {
     await Model.updateOne(
-      {MyProfileID},
-      {$push:{MyPosts:{Caption, Image:Image? `${ImageCode}${Path.extname(Image)}`:"", Video, TimeStamp, Comments, Likes, Shares}}}
-    )
+      { MyProfileID },
+      {
+        $push: {
+          MyPosts: {
+            Caption,
+            Image: Image ? `${ImageCode}${Path.extname(Image)}` : "",
+            Video,
+            TimeStamp,
+            Comments,
+            Likes,
+            Shares,
+          },
+        },
+      }
+    );
+  }
+
+  let Result = await Model.find({ MyProfileID });
+  Res.send(Result[0]);
+});
+
+App.post("/Get-Post", async (Req, Res) => {
+  let Model = new mongoose.model("posts", PostSchema);
+
+  let Result = await Model.find({ MyProfileID: Req.body?.ID });
+
+  if (Result.length>0) {
+    Res.send(Result[0]);
+  } else {
+    Res.send({ Error: "Yet No Posts" });
   }
 });
 
@@ -166,7 +209,7 @@ App.post("/Post-Image", upload, async (Req, Res) => {
   Res.send({ ImageCode, Extension: Path.extname(Req.file.originalname) });
 });
 
-App.get("/facebook", Verify , async (Req, Res) => {
+App.get("/facebook", Verify, async (Req, Res) => {
   Res.send({ Pass: true });
 });
 

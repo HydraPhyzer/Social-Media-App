@@ -12,3 +12,10 @@ export let GetUser=()=>
         type:"GET-USER",
     }
 }
+export let SetPosts=(Posts)=>
+{
+    return{
+        type:"SET-POSTS",
+        payload:Posts
+    }
+}

@@ -1,5 +1,6 @@
 let InitialState={
     User:{},
+    UserPosts:{},
 };
 
 let Reduce=(State=InitialState , Action)=>
@@ -14,6 +15,11 @@ let Reduce=(State=InitialState , Action)=>
             return {
                 ...State,
                 ...State.User,
+            }
+        case "SET-POSTS":
+            return{
+                ...State,
+                UserPosts:Action.payload
             }
         default:
             return State;

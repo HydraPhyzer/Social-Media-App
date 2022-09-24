@@ -6,7 +6,7 @@ import InsertCommentIcon from "@mui/icons-material/InsertComment";
 import ReplyIcon from "@mui/icons-material/Reply";
 import Image from "next/image";
 
-const AddPost = () => {
+const AddPost = ({ Element }) => {
   let State = useSelector((Stat) => {
     return Stat.Reduce;
   });
@@ -23,20 +23,28 @@ const AddPost = () => {
         </div>
       </div>
 
-      <div className="text-sm px-2">
-        <p>Hello World</p>
-      </div>
-
-      <div className="relative h-[300px] bg-black w-[100%]">
-        <div>
-          <Image
-            src={`http://localhost:3500/Public/Uploads/${State?.User?.Image}`}
-            layout="fill"
-            objectFit="contain"
-            alt="Post Image"
-          />
+      {Element?.Caption ? (
+        <div className="text-sm px-2">
+          <p>{Element?.Caption}</p>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
+
+      {Element?.Image ? (
+        <div className="relative h-[300px] bg-black w-[100%]">
+          <div>
+            <Image
+              src={`http://localhost:3500/Public/PostsImages/${Element?.Image}`}
+              layout="fill"
+              objectFit="contain"
+              alt="Post Image"
+            />
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
 
       <hr className="h-[3px] bg-gray-300 border-none rounded-full" />
 

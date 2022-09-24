@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Avatar } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import {SetPosts} from '../Redux/Actions'
 let FormData = require("form-data");
 import Image from "next/image";
 
@@ -10,6 +11,7 @@ const AddPost = () => {
   let [Preview, setPreview] = useState();
   const PostImageSelector = useRef(null);
 
+  let Dispatch=useDispatch();
   let State = useSelector((Stat) => {
     return Stat.Reduce;
   });
@@ -64,6 +66,11 @@ const AddPost = () => {
       headers: {
         "Content-Type": "application/json",
       },
+    })
+    .then(async(Res)=>
+    {
+      let Result = await Res.json();
+      Dispatch(SetPosts(Result))
     });
   };
 
@@ -84,14 +91,18 @@ const AddPost = () => {
         />
       </div>
 
-      {Preview?<div className="relative h-[100%] w-[100%] rounded-md flex justify-center">
-        <Image
-          src={`http://localhost:3500/Public/PostsImages/${Preview?.ImageCode}${Preview?.Extension}`}
-          height={100}
-          width={100}
-          objectFit="contain"
-        />
-      </div>:""}
+      {Preview ? (
+        <div className="relative h-[100%] w-[100%] rounded-md flex justify-center">
+          <Image
+            src={`http://localhost:3500/Public/PostsImages/${Preview?.ImageCode}${Preview?.Extension}`}
+            height={100}
+            width={100}
+            objectFit="contain"
+          />
+        </div>
+      ) : (
+        ""
+      )}
 
       {Text || PostImage ? (
         <button
