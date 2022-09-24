@@ -2,10 +2,12 @@ import React, { useState, useRef } from "react";
 import { Avatar } from "@mui/material";
 import { useSelector } from "react-redux";
 let FormData = require("form-data");
+import Image from "next/image";
 
 const AddPost = () => {
   let [Text, setText] = useState("");
   let [PostImage, setPostImage] = useState();
+  let [Preview, setPreview] = useState();
   const PostImageSelector = useRef(null);
 
   let State = useSelector((Stat) => {
@@ -19,17 +21,20 @@ const AddPost = () => {
     const fileObj = event.target.files && event.target.files[0];
     if (!fileObj) {
       return;
-    }
-    else
-    {
+    } else {
       setPostImage(fileObj);
       const form = new FormData();
-      form.append("POSTIMAGE",fileObj.name);
-      form.append("User-Image",fileObj);
+      form.append("POSTIMAGE", fileObj.name);
+      form.append("PREVIEWCODE", Preview?.ImageCode);
+      form.append("PREVIEWEXT", Preview?.Extension);
+      form.append("User-Image", fileObj);
 
       await fetch(`http://localhost:3500/Post-Image`, {
         method: "POST",
         body: form,
+      }).then(async (Res) => {
+        let Result = await Res.json();
+        setPreview(Result);
       });
     }
     event.target.value = null;
@@ -37,6 +42,7 @@ const AddPost = () => {
 
   let AddPost = () => {
     setText("");
+    setPreview();
 
     let CompleteObject = {
       MyName: State?.User?.Name,
@@ -77,6 +83,15 @@ const AddPost = () => {
           placeholder={`Whats in Your Mind ?`}
         />
       </div>
+
+      {Preview?<div className="relative h-[100%] w-[100%] rounded-md flex justify-center">
+        <Image
+          src={`http://localhost:3500/Public/PostsImages/${Preview?.ImageCode}${Preview?.Extension}`}
+          height={100}
+          width={100}
+          objectFit="contain"
+        />
+      </div>:""}
 
       {Text || PostImage ? (
         <button

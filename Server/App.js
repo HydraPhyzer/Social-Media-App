@@ -9,7 +9,7 @@ let DIR2 = Path.join(__dirname, "/Public/PostsImages");
 var jwt = require("jsonwebtoken");
 let FS = require("fs");
 const multer = require("multer");
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, Mongoose } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 let PostSchema = require("./DB/PostSchema");
 App.use(express.json());
@@ -33,13 +33,9 @@ let Verify = (Req, Res, next) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-
-    if(req?.body?.POSTIMAGE)
-    {
+    if (req?.body?.POSTIMAGE) {
       cb(null, `${DIR2}`);
-    }
-    else
-    {
+    } else {
       console.log(req.body);
       cb(null, `${DIR}`);
     }
@@ -47,6 +43,9 @@ const storage = multer.diskStorage({
   filename: async function (req, file, cb) {
     if (req?.body?.POSTIMAGE) {
       ImageCode = uuidv4();
+      if (FS.existsSync(`${__dirname}/Public/PostsImages/${req.body?.PREVIEWCODE}${req.body?.PREVIEWEXT}`)) {
+        FS.unlinkSync(`${__dirname}/Public/PostsImages/${req.body?.PREVIEWCODE}${req.body?.PREVIEWEXT}`);
+      }
       const uniqueSuffix = ImageCode + Path.extname(file.originalname);
       cb(null, uniqueSuffix);
     } else {
@@ -152,27 +151,22 @@ App.post("/Add-Post", async (Req, Res) => {
     let Data = new Model({
       MyName,
       MyProfileID,
-      MyPosts: {
-        Caption,
-        Image,
-        Video,
-        TimeStamp,
-        Comments,
-        Likes,
-        Shares,
-      },
+      MyPosts: [{ Caption, Image:Image? `${ImageCode}${Path.extname(Image)}`:"", Video, TimeStamp, Comments, Likes, Shares }],
     });
     await Data.save();
   } else {
-    console.log("Already Available");
+    await Model.updateOne(
+      {MyProfileID},
+      {$push:{MyPosts:{Caption, Image:Image? `${ImageCode}${Path.extname(Image)}`:"", Video, TimeStamp, Comments, Likes, Shares}}}
+    )
   }
 });
 
 App.post("/Post-Image", upload, async (Req, Res) => {
-  
+  Res.send({ ImageCode, Extension: Path.extname(Req.file.originalname) });
 });
 
-App.get("/facebook", Verify, async (Req, Res) => {
+App.get("/facebook", Verify , async (Req, Res) => {
   Res.send({ Pass: true });
 });
 

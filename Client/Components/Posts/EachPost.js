@@ -4,15 +4,15 @@ import { useSelector } from "react-redux";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import InsertCommentIcon from "@mui/icons-material/InsertComment";
 import ReplyIcon from "@mui/icons-material/Reply";
+import Image from "next/image";
 
 const AddPost = () => {
-
   let State = useSelector((Stat) => {
     return Stat.Reduce;
   });
 
   return (
-    <div className="flex flex-col bg-white border-2 border-gray-500 p-2 rounded-md space-y-3 shadow-lg">
+    <div className="flex flex-col bg-white border-2 border-gray-500 p-2 rounded-md space-y-3 shadow-lg ">
       <div className="Top text-xs flex items-center bg-white space-x-2">
         <Avatar
           src={`http://localhost:3500/Public/Uploads/${State?.User?.Image}`}
@@ -23,8 +23,19 @@ const AddPost = () => {
         </div>
       </div>
 
-      <div className="text-sm">
+      <div className="text-sm px-2">
         <p>Hello World</p>
+      </div>
+
+      <div className="relative h-[300px] bg-black w-[100%]">
+        <div>
+          <Image
+            src={`http://localhost:3500/Public/Uploads/${State?.User?.Image}`}
+            layout="fill"
+            objectFit="contain"
+            alt="Post Image"
+          />
+        </div>
       </div>
 
       <hr className="h-[3px] bg-gray-300 border-none rounded-full" />

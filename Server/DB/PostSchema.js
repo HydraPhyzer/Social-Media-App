@@ -14,7 +14,7 @@ let Post=Mongo.Schema({
 let PostSchema=Mongo.Schema({
     MyName:String,
     MyProfileID:String,
-    MyPosts:Post
+    MyPosts:[Post]
 })
 
 module.exports=PostSchema
