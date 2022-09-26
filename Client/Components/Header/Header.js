@@ -12,6 +12,7 @@ import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import Person2Icon from "@mui/icons-material/Person2";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
@@ -20,6 +21,9 @@ import { useSelector } from "react-redux";
 
 const Header = ({ props }) => {
   let [Menu, setMenu] = useState(false);
+  let [Type, setType] = useState("");
+  let [AvailableUser, setAvailableUser] = useState();
+  let Router = useRouter();
 
   let State = useSelector((Stat) => {
     return Stat.Reduce;
@@ -28,25 +32,69 @@ const Header = ({ props }) => {
   let DisplayMenu = () => {
     setMenu(!Menu);
   };
-  let Router = useRouter();
+
+  let SearchUser = (Val) => {
+    console.log(Val);
+    fetch("http://localhost:3500/Search-User", {
+      method: "POST",
+      body: JSON.stringify({ Query: Val }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(async (Res) => {
+      let Result = await Res.json();
+      setAvailableUser(Result);
+    });
+  };
   let LogOut = () => {
     deleteCookie("Token");
     Router.push("/facebook");
   };
   return (
-    <div className="p-1 bg-white flex justify-between relative items-center sm:space-x-5 shadow-md w-[100vw] ">
-      <div className="Left flex items-center space-x-2 sm:w-[25%]">
-        <Link href="/">
-          <Avatar src={"/Facebook.png"} className="Avatar" />
-        </Link>
-        <input
-          type="text"
-          placeholder="Type to Search ..."
-          className="bg-[#ecf0f1] rounded-full hidden sm:block sm:px-3 text-gray-500 text-sm w-[100%]"
-        />
-        <span className="sm:hidden">
-          <SearchRoundedIcon className="Icon block" />
-        </span>
+    <div className="p-1 bg-white flex justify-between items-center sm:space-x-5 shadow-md w-[100vw] relative">
+      <div className="Left flex flex-col justify center sm:w-[25%]">
+        <section className="flex space-x-2">
+          <Link href="/">
+            <Avatar src={"/Facebook.png"} className="Avatar" />
+          </Link>
+          <input
+            type="text"
+            placeholder="Type to Search ..."
+            className="bg-[#ecf0f1] rounded-full hidden sm:block sm:px-3 text-gray-500 text-sm w-[100%]"
+            onChange={(E) => {
+              SearchUser(E.target.value);
+              setType(E.target.value);
+            }}
+            onKeyDown={(E) => {
+              if (E.key == "Enter") {
+                SearchUser(Type);
+              }
+            }}
+          />
+          <span className="sm:hidden">
+            <SearchRoundedIcon className="Icon block" />
+          </span>
+        </section>
+
+        <section className="absolute justify-between items-center text-gray-500 sm:text-xs text-sm space-x-5 left-0 top-[100%] max-h-[25vh] bg-white hidden sm:flex sm:w-[25%]  md:pr-5">
+          <div className="flex flex-col space-y-2">
+            {Type
+              ? AvailableUser?.map((Elem) => {
+                  return (
+                    <div className="flex items-center justify-between space-x-5 p-1">
+                      <Link href="/">
+                        <Avatar
+                          src={`http://localhost:3500/Public/Uploads/${Elem?.Image}`}
+                        />
+                      </Link>
+                      <p>{Elem?.Name}</p>
+                      <AddCircleIcon className=" text-green-500" />
+                    </div>
+                  );
+                })
+              : ""}
+          </div>
+        </section>
       </div>
       <div className="Center flex-1 justify-center flex">
         <div className="space-x-5 bg-[#ecf0f1] w-fit shadow-md py-1 sm:px-5 rounded-lg sm:max-w-[80%] md:flex-1 px-2 justify-around flex">

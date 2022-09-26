@@ -204,6 +204,15 @@ App.post("/Get-Post", async (Req, Res) => {
     Res.send({ Error: "Yet No Posts" });
   }
 });
+App.post("/Search-User",async(Req, Res)=>
+{
+  let Model = new mongoose.model("users", UserSchema);
+
+  let Result = await Model.find({
+    $or:[{"Name":{$regex:Req.body.Query}}]
+  });
+  Res.send(Result)
+})
 
 App.post("/Post-Image", upload, async (Req, Res) => {
   Res.send({ ImageCode, Extension: Path.extname(Req.file.originalname) });
