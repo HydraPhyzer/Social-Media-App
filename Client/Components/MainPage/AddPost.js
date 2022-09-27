@@ -70,6 +70,7 @@ const AddPost = () => {
     .then(async(Res)=>
     {
       let Result = await Res.json();
+      setPostImage("")
       Dispatch(SetPosts(Result))
     });
   };

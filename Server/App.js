@@ -198,24 +198,50 @@ App.post("/Get-Post", async (Req, Res) => {
 
   let Result = await Model.find({ MyProfileID: Req.body?.ID });
 
-  if (Result.length>0) {
+  if (Result.length > 0) {
     Res.send(Result[0]);
   } else {
     Res.send({ Error: "Yet No Posts" });
   }
 });
-App.post("/Search-User",async(Req, Res)=>
-{
+App.post("/Search-User", async (Req, Res) => {
   let Model = new mongoose.model("users", UserSchema);
 
   let Result = await Model.find({
-    $or:[{"Name":{$regex:Req.body.Query}}]
+    $or: [{ Name: { $regex: Req.body.Query } }],
   });
-  Res.send(Result)
-})
+  Res.send(Result);
+});
 
 App.post("/Post-Image", upload, async (Req, Res) => {
   Res.send({ ImageCode, Extension: Path.extname(Req.file.originalname) });
+});
+
+App.delete("/Delete-Post", async (Req, Res) => {
+  console.log(Req.body);
+  let Model = new mongoose.model("posts", PostSchema);
+  let Find = await Model.find({ _id: Req.body.PostID });
+
+  let Get = Find[0].MyPosts.map((Obj) => {
+    if (Obj._id == Req.body._id) {
+      if (Obj.Image)
+      {
+        FS.unlinkSync(
+          `${__dirname}/Public/PostsImages/${Obj.Image}`
+        );
+      }
+    }
+  });
+
+  console.log(Get);
+  let Result = await Model.update(
+    { _id: Req.body.PostID },
+    {
+      $pull: {
+        MyPosts: { _id: Req.body._id },
+      },
+    }
+  );
 });
 
 App.get("/facebook", Verify, async (Req, Res) => {

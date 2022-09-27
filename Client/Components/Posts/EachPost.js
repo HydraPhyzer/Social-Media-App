@@ -7,13 +7,22 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import Image from "next/image";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteIcon from "@mui/icons-material/Delete";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
-const AddPost = ({ Element, Name }) => {
+const AddPost = ({ Element, Name, Func }) => {
   let [Show, setShow] = useState(false);
   let State = useSelector((Stat) => {
     return Stat.Reduce;
   });
+
+  let DeletePost = (ID) => {
+    fetch("http://localhost:3500/Delete-Post", {
+      method: "DELETE",
+      body: JSON.stringify({_id: ID, PostID:State?.UserPosts?._id}),
+      headers: {
+        'content-type':"application/json"
+      }
+    })
+  };
 
   return (
     <div className="flex flex-col bg-white border-2 border-gray-500 p-2 rounded-md space-y-3 shadow-lg ">
@@ -27,15 +36,25 @@ const AddPost = ({ Element, Name }) => {
             <small>{Element?.createdAt.toString()}</small>
           </section>
 
-            <MoreHorizIcon onClick={()=>{setShow(!Show)}} className="text-blue-500" />
-          
+          <MoreHorizIcon
+            onClick={() => {
+              setShow(!Show);
+            }}
+            className="text-blue-500"
+          />
         </div>
 
         {Show ? (
-          <div className="absolute right-0 top-5 bg-gray-200 text-black rounded-sm p-2 z-10">
-            <ul className="flex space-x-2">
-              <li className="text-red-500 font-sm">
-                <DeleteIcon />
+          <div className="absolute right-0 top-5 bg-gray-200 text-black rounded-sm z-10">
+            <ul className="flex">
+              <li
+                onClick={async() => {
+                  await DeletePost(Element?._id);
+                  Func()
+                }}
+                className="text-red-500 font-sm"
+              >
+                <DeleteIcon className="p-1" />
               </li>
             </ul>
           </div>
